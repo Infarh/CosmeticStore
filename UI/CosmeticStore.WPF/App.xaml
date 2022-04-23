@@ -4,8 +4,11 @@
              xmlns:local="clr-namespace:CosmeticStore.WPF"
              StartupUri="Views/Windows/MainWindow.xaml">
     <Application.Resources>
-         
-        <local:ServiceLocator x:Key="Locator"/>
-
+         <ResourceDictionary>
+             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/DefaultStyle.xaml"/>
+             </ResourceDictionary.MergedDictionaries>
+             <local:ServiceLocator x:Key="Locator"/>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

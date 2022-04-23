@@ -1,0 +1,36 @@
+﻿<Window x:Class="CosmeticStore.WPF.Views.Windows.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:l="clr-namespace:CosmeticStore.WPF.Views.Windows"
+        xmlns:mv="clr-namespace:CosmeticStore.WPF.ViewModels"
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="ToolWindow"
+        Title="{Binding Title}"
+        d:DataContext="{d:DesignInstance mv:LoginWindowViewModel, IsDesignTimeCreatable=True}"
+        Width="450" Height="250">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="Имя пользователя" 
+                   VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                   Margin="0,0,0,20"/>
+        <TextBox Grid.Row="1" Margin="20,5" HorizontalContentAlignment="Center"
+                 Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged, Delay=100}"/>
+        <Button Grid.Row="2" Content="Войти" 
+                Padding="80,20"
+                VerticalAlignment="Center" HorizontalAlignment="Center"
+                Command="{Binding LoginCommand}"
+                CommandParameter="{Binding UserName}">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="15"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+    </Grid>
+</Window>

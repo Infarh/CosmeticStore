@@ -3,11 +3,60 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.fontawesome.com/icons/"
         xmlns:l="clr-namespace:CosmeticStore.WPF"
+        xmlns:vm="clr-namespace:CosmeticStore.WPF.ViewModels"
         Title="{Binding Title}"
         DataContext="{Binding MainModel, Source={StaticResource Locator}}"
-        Width="800" Height="450">
-    <DockPanel>
-
+        Width="1600" Height="800">
+    <DockPanel Margin="3">
+        <StatusBar>
+            <StatusBarItem>
+                <TextBlock Text="{Binding UserName, StringFormat=Пользователь {0}}"/>
+            </StatusBarItem>
+        </StatusBar>
+        <DockPanel DockPanel.Dock="Top" LastChildFill="False">
+            <Button DockPanel.Dock="Right" Padding="10" BorderThickness="0"
+                    Command="{Binding LoginCommand}">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"/>
+                    </Style>
+                </Button.Resources>
+                <fa:ImageAwesome Height="60" Icon="Regular_User"/>
+            </Button>
+        </DockPanel>
+        <GroupBox Header="Товары">
+            <ListBox ItemsSource="{Binding Products}" 
+                     VerticalContentAlignment="Stretch" 
+                     HorizontalContentAlignment="Stretch">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="4"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="vm:ProductViewModel">
+                        <Border Margin="3"
+                                BorderThickness="1" BorderBrush="Gray"
+                                CornerRadius="5">
+                            <DockPanel Margin="5">
+                                <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" Text="{Binding Name}"/>
+                                <TextBlock DockPanel.Dock="Bottom" Text="{Binding Description}"/>
+                                <Border BorderThickness="0,1" BorderBrush="Gray" Margin="3">
+                                    <Grid>
+                                        <TextBlock Text="No image" Foreground="Gray" FontWeight="Bold"
+                                                   HorizontalAlignment="Center" 
+                                                   VerticalAlignment="Center"/>
+                                        <Image Source="{Binding Image}" Margin="3"
+                                               MaxHeight="140"/>
+                                    </Grid>
+                                </Border>
+                            </DockPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </GroupBox>
     </DockPanel>
 </Window>
