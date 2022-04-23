@@ -1,22 +1,41 @@
+using CosmeticStore.DAL.Context;
+using CosmeticStore.DAL.Sqlite.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+var configuration = builder.Configuration;
+var services = builder.Services;
+
+var db_type = configuration["Database"];
+switch (db_type)
+{
+    default: throw new InvalidOperationException($"Тип базы данных {db_type} не поддерживается");
+
+    case "Sqlite":
+        services.AddCosmeticDB(configuration.GetConnectionString(db_type));
+        break;
+}
+
+services.AddControllers();
+services.AddEndpointsApiExplorer();
+services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+await using (var scope = app.Services.CreateAsyncScope())
+{
+    var initializer = scope.ServiceProvider.GetRequiredService<DbInitializer>();
+    await initializer.InitializeAsync();
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using CosmeticStore.Domain.Entities.Base;
 
 namespace CosmeticStore.Domain.Entities;
 
-public class Order
+public class Order : Entity
 {
     [Required]
     public Customer Customer { get; set; } = null!;
