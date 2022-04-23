@@ -6,5 +6,5 @@ namespace CosmeticStore.Domain.Entities.Base;
 public class NamedEntity : Entity, INamedEntity
 {
     [Required]
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
 }

@@ -1,11 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using CosmeticStore.Domain.Entities.Base;
 
 namespace CosmeticStore.Domain.Entities;
 
 public class Order : Entity
 {
-    [Required]
+    public int CustomerId { get; set; }
+
+    [Required, ForeignKey(nameof(CustomerId))]
     public Customer Customer { get; set; } = null!;
 
     public DateTimeOffset Date { get; set; } = DateTimeOffset.Now;
