@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CosmeticStore.DAL.Sqlite.Migrations
 {
     [DbContext(typeof(CosmeticDB))]
-    [Migration("20220423075525_Initial")]
+    [Migration("20220423091012_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -81,7 +81,7 @@ namespace CosmeticStore.DAL.Sqlite.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("OrderId")
+                    b.Property<int>("OrderId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("ProductId")
@@ -109,6 +109,9 @@ namespace CosmeticStore.DAL.Sqlite.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ImageUrl")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
@@ -139,15 +142,19 @@ namespace CosmeticStore.DAL.Sqlite.Migrations
 
             modelBuilder.Entity("CosmeticStore.Domain.Entities.OrderItem", b =>
                 {
-                    b.HasOne("CosmeticStore.Domain.Entities.Order", null)
+                    b.HasOne("CosmeticStore.Domain.Entities.Order", "Order")
                         .WithMany("Items")
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("CosmeticStore.Domain.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Order");
 
                     b.Navigation("Product");
                 });

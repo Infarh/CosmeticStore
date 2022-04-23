@@ -14,4 +14,6 @@ public class Product : NamedEntity
 
     [Required, ForeignKey(nameof(CategoryId))]
     public Category Category { get; set; } = null!;
+
+    public string? ImageUrl { get; set; }
 }
