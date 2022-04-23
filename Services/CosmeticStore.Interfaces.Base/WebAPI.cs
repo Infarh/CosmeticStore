@@ -1,4 +1,4 @@
-﻿namespace CosmeticStore.Interfaces;
+﻿namespace CosmeticStore.Interfaces.Base;
 
 public static class WebAPIAddress
 {

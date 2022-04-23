@@ -1,6 +1,6 @@
 ﻿using CosmeticStore.DAL.Context;
-using CosmeticStore.Interfaces.Entities;
-using CosmeticStore.Interfaces.Repositories;
+using CosmeticStore.Interfaces.Base.Entities;
+using CosmeticStore.Interfaces.Base.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using CosmeticStore.WebAPI.Clients.Infrastructure;
 using CosmeticStore.WPF.ViewModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +26,7 @@ public partial class App
     private static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
     {
         services.AddSingleton<MainWindowViewModel>();
+        services.AddWebAPIRepositories(host.Configuration["WebAPI"]);
     }
 
     protected override async void OnStartup(StartupEventArgs e)

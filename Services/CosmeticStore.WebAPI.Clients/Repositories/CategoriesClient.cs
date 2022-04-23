@@ -1,5 +1,6 @@
 ﻿using CosmeticStore.Domain.Entities;
 using CosmeticStore.Interfaces;
+using CosmeticStore.Interfaces.Base;
 using CosmeticStore.WebAPI.Clients.Repositories.Base;
 
 namespace CosmeticStore.WebAPI.Clients.Repositories;

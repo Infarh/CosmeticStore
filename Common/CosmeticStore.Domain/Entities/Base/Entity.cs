@@ -1,4 +1,4 @@
-﻿using CosmeticStore.Interfaces.Entities;
+﻿using CosmeticStore.Interfaces.Base.Entities;
 
 namespace CosmeticStore.Domain.Entities.Base;
 

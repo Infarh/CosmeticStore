@@ -1,4 +1,4 @@
-﻿namespace CosmeticStore.Interfaces.Entities;
+﻿namespace CosmeticStore.Interfaces.Base.Entities;
 
 public interface IEntity
 {

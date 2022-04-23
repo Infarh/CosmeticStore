@@ -1,6 +1,5 @@
-﻿using CosmeticStore.Interfaces.Entities;
-using CosmeticStore.Interfaces.Repositories;
-
+﻿using CosmeticStore.Interfaces.Base.Entities;
+using CosmeticStore.Interfaces.Base.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CosmeticStore.WebAPI.Controllers.Base;

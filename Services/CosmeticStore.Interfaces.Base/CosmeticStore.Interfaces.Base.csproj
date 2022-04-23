@@ -6,8 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Data\CosmeticStore.DAL\CosmeticStore.DAL.csproj" />
-  </ItemGroup>
-
 </Project>

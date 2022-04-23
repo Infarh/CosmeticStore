@@ -1,6 +1,6 @@
 using CosmeticStore.DAL.Context;
 using CosmeticStore.DAL.Sqlite.Extensions;
-using CosmeticStore.Interfaces.Repositories;
+using CosmeticStore.Interfaces.Base.Repositories;
 using CosmeticStore.Services.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);

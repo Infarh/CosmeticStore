@@ -54,7 +54,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\CosmeticStore.Domain\CosmeticStore.Domain.csproj" />
-    <ProjectReference Include="..\..\Services\CosmeticStore.Interfaces\CosmeticStore.Interfaces.csproj" />
+    <ProjectReference Include="..\..\Services\CosmeticStore.WebAPI.Clients\CosmeticStore.WebAPI.Clients.csproj" />
   </ItemGroup>
 
 </Project>

@@ -5,8 +5,8 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
-using CosmeticStore.Interfaces.Entities;
-using CosmeticStore.Interfaces.Repositories;
+using CosmeticStore.Interfaces.Base.Entities;
+using CosmeticStore.Interfaces.Base.Repositories;
 
 namespace CosmeticStore.WebAPI.Clients.Repositories.Base;
 

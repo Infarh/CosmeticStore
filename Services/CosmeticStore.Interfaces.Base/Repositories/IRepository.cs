@@ -1,6 +1,6 @@
-﻿using CosmeticStore.Interfaces.Entities;
+﻿using CosmeticStore.Interfaces.Base.Entities;
 
-namespace CosmeticStore.Interfaces.Repositories;
+namespace CosmeticStore.Interfaces.Base.Repositories;
 
 public interface IRepository<T> where T : class, IEntity
 {
