@@ -9,6 +9,7 @@ using System.Windows.Input;
 using CosmeticStore.Domain.Entities;
 using CosmeticStore.Interfaces.Base.Repositories;
 using CosmeticStore.Interfaces.Repositories;
+using CosmeticStore.WebAPI.Clients.Repositories;
 using CosmeticStore.WPF.Commands;
 using CosmeticStore.WPF.ViewModels.Base;
 using CosmeticStore.WPF.Views.Windows;
@@ -19,14 +20,17 @@ public class MainWindowViewModel : ViewModel
 {
     private readonly IProductsRepository _ProductsRepository;
     private readonly IRepository<Category> _CategoriesRepository;
+    private readonly ImagesClient _ImagesClient;
 
     public MainWindowViewModel(
         IProductsRepository ProductsRepository,
-        IRepository<Category> CategoriesRepository
+        IRepository<Category> CategoriesRepository,
+        ImagesClient ImagesClient
         )
     {
         _ProductsRepository = ProductsRepository;
         _CategoriesRepository = CategoriesRepository;
+        _ImagesClient = ImagesClient;
     }
 
     #region Title : string - Заголовок главного окна
@@ -94,16 +98,32 @@ public class MainWindowViewModel : ViewModel
         try
         {
             var products = await _ProductsRepository.GetCategoryProducts(category_id);
-            Products = products
-               .Select(p => new ProductViewModel
+
+            var product_view_models = new List<ProductViewModel>();
+            foreach (var product in products)
+            {
+                var product_model = new ProductViewModel
                 {
-                    Id = p.Id,
-                    Name = p.Name,
-                    Price = p.Price,
-                    Description = p.Description,
-                    ImageUrl = p.ImageUrl
-                })
-               .ToArray();
+                    Id = product.Id,
+                    Name = product.Name,
+                    Price = product.Price,
+                    Description = product.Description,
+                };
+                _ = product_model.LoadImageAsync(_ImagesClient, product.ImageUrl);
+                product_view_models.Add(product_model);
+            }
+
+            //Products = products
+            //   .Select(p => new ProductViewModel
+            //    {
+            //        Id = p.Id,
+            //        Name = p.Name,
+            //        Price = p.Price,
+            //        Description = p.Description,
+            //        ImageUrl = p.ImageUrl
+            //    })
+            //   .ToArray();
+            Products = product_view_models;
         }
         catch (OperationCanceledException)
         {

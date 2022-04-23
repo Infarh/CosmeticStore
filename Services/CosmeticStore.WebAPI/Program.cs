@@ -22,8 +22,6 @@ switch (db_type)
         break;
 }
 
-
-
 services.AddSingleton(builder.Environment.WebRootFileProvider);
 
 services.AddControllers();
@@ -35,7 +33,7 @@ var app = builder.Build();
 await using (var scope = app.Services.CreateAsyncScope())
 {
     var initializer = scope.ServiceProvider.GetRequiredService<DbInitializer>();
-    await initializer.InitializeAsync();
+    await initializer.InitializeAsync(RemoveBefore: true);
 }
 
 if (app.Environment.IsDevelopment())

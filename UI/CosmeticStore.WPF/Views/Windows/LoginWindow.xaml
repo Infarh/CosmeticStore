@@ -10,7 +10,7 @@
         Title="{Binding Title}"
         d:DataContext="{d:DesignInstance mv:LoginWindowViewModel, IsDesignTimeCreatable=True}"
         Width="450" Height="250">
-    <Grid>
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
@@ -18,10 +18,13 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Text="Имя пользователя" 
                    VerticalAlignment="Bottom" HorizontalAlignment="Center"
-                   Margin="0,0,0,20"/>
+                   Margin="0,0,0,20"
+                   FontSize="25"/>
         <TextBox Grid.Row="1" Margin="20,5" HorizontalContentAlignment="Center"
-                 Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged, Delay=100}"/>
-        <Button Grid.Row="2" Content="Войти" 
+                 Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged, Delay=100}"
+                 FontSize="20"
+                 Padding="3,5"/>
+        <Button Grid.Row="2" Content="Войти" FontSize="22"
                 Padding="80,20"
                 VerticalAlignment="Center" HorizontalAlignment="Center"
                 Command="{Binding LoginCommand}"

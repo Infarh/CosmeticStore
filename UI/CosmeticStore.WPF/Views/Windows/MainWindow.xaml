@@ -89,7 +89,7 @@
                          HorizontalContentAlignment="Stretch">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <UniformGrid Columns="4"/>
+                            <UniformGrid/>
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                     <ListBox.ItemTemplate>
