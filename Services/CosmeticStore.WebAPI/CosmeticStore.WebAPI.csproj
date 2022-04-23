@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Data\CosmeticStore.DAL.Sqlite\CosmeticStore.DAL.Sqlite.csproj" />
+    <ProjectReference Include="..\CosmeticStore.Services\CosmeticStore.Services.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,7 @@
 using CosmeticStore.DAL.Context;
 using CosmeticStore.DAL.Sqlite.Extensions;
+using CosmeticStore.Interfaces.Repositories;
+using CosmeticStore.Services.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +15,9 @@ switch (db_type)
     default: throw new InvalidOperationException($"Тип базы данных {db_type} не поддерживается");
 
     case "Sqlite":
-        services.AddCosmeticDB(configuration.GetConnectionString(db_type));
+        services
+           .AddCosmeticDB(configuration.GetConnectionString(db_type))
+           .AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
         break;
 }
 
