@@ -71,6 +71,7 @@ public class DbInitializer
                Description = $"Описание товара {i}",
                Price = rnd.Next(500, 2000),
                Category = categories[rnd.Next(categories.Length)],
+               ImageUrl = $"Img{rnd.Next(1, 11)}.jpg",
             });
 
         await using var transaction = await _db.Database.BeginTransactionAsync(Cancel);

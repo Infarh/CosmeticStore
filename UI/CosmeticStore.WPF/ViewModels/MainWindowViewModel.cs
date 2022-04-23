@@ -8,6 +8,7 @@ using System.Windows.Input;
 
 using CosmeticStore.Domain.Entities;
 using CosmeticStore.Interfaces.Base.Repositories;
+using CosmeticStore.Interfaces.Repositories;
 using CosmeticStore.WPF.Commands;
 using CosmeticStore.WPF.ViewModels.Base;
 using CosmeticStore.WPF.Views.Windows;
@@ -16,11 +17,11 @@ namespace CosmeticStore.WPF.ViewModels;
 
 public class MainWindowViewModel : ViewModel
 {
-    private readonly IRepository<Product> _ProductsRepository;
+    private readonly IProductsRepository _ProductsRepository;
     private readonly IRepository<Category> _CategoriesRepository;
 
     public MainWindowViewModel(
-        IRepository<Product> ProductsRepository,
+        IProductsRepository ProductsRepository,
         IRepository<Category> CategoriesRepository
         )
     {
@@ -78,15 +79,31 @@ public class MainWindowViewModel : ViewModel
         set
         {
             if (!Set(ref _SelectedCategory, value)) return;
-
+            LoadCategoryProducts(value);
         }
     }
 
-    private async void LoadCategoryProducts(CategoryViewModel Category)
+    private async void LoadCategoryProducts(CategoryViewModel? Category)
     {
+        if (Category is not { Id: var category_id })
+        {
+            Products = null;
+            return;
+        }
+
         try
         {
-            //var products = await _CategoriesRepository.
+            var products = await _ProductsRepository.GetCategoryProducts(category_id);
+            Products = products
+               .Select(p => new ProductViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Price = p.Price,
+                    Description = p.Description,
+                    ImageUrl = p.ImageUrl
+                })
+               .ToArray();
         }
         catch (OperationCanceledException)
         {
@@ -102,13 +119,13 @@ public class MainWindowViewModel : ViewModel
 
     #endregion
 
-    #region Products : IEnumerable<ProductViewModel> - Список товаров
+    #region Products : IEnumerable<ProductViewModel>? - Список товаров
 
     /// <summary>Список товаров</summary>
-    private IEnumerable<ProductViewModel> _Products = null!;
+    private IEnumerable<ProductViewModel>? _Products;
 
     /// <summary>Список товаров</summary>
-    public IEnumerable<ProductViewModel> Products
+    public IEnumerable<ProductViewModel>? Products
     {
         get => _Products;
         private set

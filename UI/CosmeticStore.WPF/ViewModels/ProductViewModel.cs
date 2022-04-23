@@ -16,18 +16,18 @@ public class ProductViewModel : ViewModel
     public decimal Price { get; init; }
 
     private readonly string _ImageUrl = null!;
-    public string ImageUrl
+    public string? ImageUrl
     {
         get => _ImageUrl;
         init
         {
-            _ImageUrl = value;
-            InitializeImageAsync(Path.Combine("Images", value))
+            _ImageUrl = value ?? "";
+            InitializeImageAsync(Path.Combine("Images", value ?? ""))
                .ContinueWith(t => Image = t.Result, TaskContinuationOptions.OnlyOnRanToCompletion);
         }
     }
 
-    private static async Task<BitmapImage?> InitializeImageAsync(string ImagePath)
+    private static async Task<ImageSource?> InitializeImageAsync(string ImagePath)
     {
         await Task.Delay(Random.Shared.Next(200, 2000));
         if (!File.Exists(ImagePath))

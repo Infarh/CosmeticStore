@@ -7,7 +7,7 @@ namespace CosmeticStore.WebAPI.Controllers.Base;
 [ApiController]
 public abstract class EntityApiController<T> : ControllerBase where T : class, IEntity
 {
-    private readonly IRepository<T> _Items;
+    protected readonly IRepository<T> _Items;
 
     protected EntityApiController(IRepository<T> Products) => _Items = Products;
 

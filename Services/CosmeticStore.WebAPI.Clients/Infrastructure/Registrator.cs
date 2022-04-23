@@ -5,18 +5,21 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Polly.Extensions.Http;
 using Polly;
+using CosmeticStore.Interfaces.Repositories;
 
 namespace CosmeticStore.WebAPI.Clients.Infrastructure;
 
 public static class Registrator
 {
-    public static IServiceCollection AddWebAPIRepositories(this IServiceCollection services, string Address)
+    public static IServiceCollection AddWebAPI(this IServiceCollection services, string Address)
     {
         services.AddHttpClient("ConsmeticApi", client => client.BaseAddress = new(Address))
+           .AddTypedClient<IProductsRepository, ProductsClient>()
            .AddTypedClient<IRepository<Product>, ProductsClient>()
            .AddTypedClient<IRepository<Order>, OrdersClient>()
            .AddTypedClient<IRepository<Customer>, CustomersClient>()
            .AddTypedClient<IRepository<Category>, CategoriesClient>()
+           .AddTypedClient<ImagesClient>()
            .AddPolicyHandler(GetRetryPolicy())
            .AddPolicyHandler(GetCircuitBreakerPolicy())
            .SetHandlerLifetime(TimeSpan.FromMinutes(15));

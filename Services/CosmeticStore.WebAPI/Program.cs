@@ -1,10 +1,10 @@
 using CosmeticStore.DAL.Context;
 using CosmeticStore.DAL.Sqlite.Extensions;
 using CosmeticStore.Interfaces.Base.Repositories;
+using CosmeticStore.Interfaces.Repositories;
 using CosmeticStore.Services.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 var configuration = builder.Configuration;
 var services = builder.Services;
@@ -17,9 +17,14 @@ switch (db_type)
     case "Sqlite":
         services
            .AddCosmeticDB(configuration.GetConnectionString(db_type))
-           .AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
+           .AddScoped(typeof(IRepository<>), typeof(DbRepository<>))
+           .AddScoped<IProductsRepository, DbProductsRepository>();
         break;
 }
+
+
+
+services.AddSingleton(builder.Environment.WebRootFileProvider);
 
 services.AddControllers();
 services.AddEndpointsApiExplorer();

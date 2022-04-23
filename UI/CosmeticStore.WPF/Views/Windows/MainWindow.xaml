@@ -57,38 +57,66 @@
                     <fa:ImageAwesome Height="60" Icon="Solid_PlusCircle"/>
                 </DockPanel>
             </Button>
+            <Button DockPanel.Dock="Left" Padding="10" BorderThickness="0"
+                    Command="{Binding UpdateDataCommand}">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"/>
+                    </Style>
+                </Button.Resources>
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Right" Text="Обновить"
+                               VerticalAlignment="Center" Margin="15,0,0,0"
+                               FontSize="20"/>
+                    <fa:ImageAwesome Height="60" Icon="Solid_CloudDownloadAlt"/>
+                </DockPanel>
+            </Button>
         </DockPanel>
-        <GroupBox Header="Товары">
-            <ListBox ItemsSource="{Binding Products}" 
-                     VerticalContentAlignment="Stretch" 
-                     HorizontalContentAlignment="Stretch">
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <UniformGrid Columns="4"/>
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
-                <ListBox.ItemTemplate>
-                    <DataTemplate DataType="vm:ProductViewModel">
-                        <Border Margin="3"
-                                BorderThickness="1" BorderBrush="Gray"
-                                CornerRadius="5">
-                            <DockPanel Margin="5">
-                                <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" Text="{Binding Name}"/>
-                                <TextBlock DockPanel.Dock="Bottom" Text="{Binding Description}"/>
-                                <Border BorderThickness="0,1" BorderBrush="Gray" Margin="3">
-                                    <Grid>
-                                        <TextBlock Text="No image" Foreground="Gray" FontWeight="Bold"
-                                                   HorizontalAlignment="Center" 
-                                                   VerticalAlignment="Center"/>
-                                        <Image Source="{Binding Image}" Margin="3"
-                                               MaxHeight="140"/>
-                                    </Grid>
-                                </Border>
-                            </DockPanel>
-                        </Border>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </GroupBox>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <GroupBox Header="Категории" Grid.Column="0">
+                <ListBox ItemsSource="{Binding Categories}"
+                         DisplayMemberPath="Name"
+                         SelectedItem="{Binding SelectedCategory}"/>
+            </GroupBox>
+
+            <GroupBox Header="Товары" Grid.Column="1">
+                <ListBox ItemsSource="{Binding Products}" 
+                         VerticalContentAlignment="Stretch" 
+                         HorizontalContentAlignment="Stretch">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="4"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="vm:ProductViewModel">
+                            <Border Margin="3"
+                                    BorderThickness="1" BorderBrush="Gray"
+                                    CornerRadius="5">
+                                <DockPanel Margin="5">
+                                    <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" Text="{Binding Name}"/>
+                                    <TextBlock DockPanel.Dock="Bottom" Text="{Binding Description}"/>
+                                    <Border BorderThickness="0,1" BorderBrush="Gray" Margin="3">
+                                        <Grid>
+                                            <TextBlock Text="No image" Foreground="Gray" FontWeight="Bold"
+                                                       HorizontalAlignment="Center" 
+                                                       VerticalAlignment="Center"/>
+                                            <Image Source="{Binding Image}" Margin="3"
+                                                   MaxHeight="140"/>
+                                        </Grid>
+                                    </Border>
+                                </DockPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </GroupBox>
+
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Left"/>
+        </Grid>
     </DockPanel>
 </Window>
