@@ -21,7 +21,8 @@
                 </StackPanel>
             </Button>
             <Button Padding="20,5" BorderThickness="0"
-                    Command="{Binding LoadOrdersCommand}">
+                    Command="{Binding CancelOrderCommand}"
+                    CommandParameter="{Binding SelectedOrder}">
                 <StackPanel Orientation="Horizontal">
                     <fa:ImageAwesome Height="20" Icon="Solid_TimesCircle"/>
                     <TextBlock VerticalAlignment="Center" Text="Отменить" Margin="5,0,0,0"/>

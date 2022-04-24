@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
@@ -68,6 +69,43 @@ public class CustomerOrdersViewModel : ViewModel
         {
             MessageBox.Show(
                 $"Ошибка загрузки данных заказов\r\n{e.Message}", "Ошибка!",
+                MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    #endregion
+
+    #region Command CancelOrderCommand - Отмена заказа
+
+    /// <summary>Отмена заказа</summary>
+    private LambdaCommand? _CancelOrderCommand;
+
+    /// <summary>Отмена заказа</summary>
+    public ICommand CancelOrderCommand => _CancelOrderCommand
+        ??= new(OnCancelOrderCommandExecuted, p => p is Order);
+
+    /// <summary>Логика выполнения - Отмена заказа</summary>
+    private async void OnCancelOrderCommandExecuted(object? p)
+    {
+        if (p is not Order { Id: var order_id }) return;
+
+        try
+        {
+            var removed_order = await MainModel.OrdersRepository.RemoveAsync(order_id);
+            if (removed_order is null)
+            {
+                MessageBox.Show(
+                    "Не удалось отменить заказ", "Ошибка отмены",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
+            SelectedOrder = null;
+            Orders = Orders?.Where(order => order.Id != order_id).ToArray();
+        }
+        catch (Exception e)
+        {
+            MessageBox.Show(
+                $"Ошибка в процессе выполнения отмены заказа {e.Message}", "Ошибка!",
                 MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
