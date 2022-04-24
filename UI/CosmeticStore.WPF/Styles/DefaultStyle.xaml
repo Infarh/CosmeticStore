@@ -45,5 +45,16 @@
     <Style TargetType="RepeatButton">
         <Setter Property="Background" Value="White"/>
     </Style>
+
+    <Style TargetType="DataGrid">
+        <Setter Property="AlternatingRowBackground" Value="WhiteSmoke"/>
+        <Setter Property="EnableRowVirtualization" Value="True"/>
+        <Setter Property="AutoGenerateColumns" Value="False"/>
+        <Setter Property="CanUserAddRows" Value="False"/>
+        <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="GridLinesVisibility" Value="Vertical"/>
+        <Setter Property="RowHeaderWidth" Value="0"/>
+        <Setter Property="Background" Value="White"/>
+    </Style>
     
 </ResourceDictionary>

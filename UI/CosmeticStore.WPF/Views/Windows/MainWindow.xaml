@@ -6,10 +6,11 @@
         xmlns:fa="http://schemas.fontawesome.com/icons/"
         xmlns:l="clr-namespace:CosmeticStore.WPF"
         xmlns:vm="clr-namespace:CosmeticStore.WPF.ViewModels"
+        WindowStartupLocation="CenterScreen"
         Title="{Binding Title}"
         DataContext="{Binding MainModel, Source={StaticResource Locator}}"
-        Width="1600" Height="800">
-    <DockPanel Margin="3">
+        Width="1700" Height="1000">
+    <DockPanel Margin="10">
         <StatusBar>
             <StatusBarItem>
                 <TextBlock Text="{Binding UserName, StringFormat=Пользователь {0}}"/>
@@ -31,20 +32,28 @@
                     <fa:ImageAwesome Height="60" Icon="Regular_User"/>
                 </DockPanel>
             </Button>
-            <Button DockPanel.Dock="Left" Padding="10" BorderThickness="0">
+            <Button DockPanel.Dock="Left" Padding="10" BorderThickness="0"
+                    Command="{Binding ShowCartCommand}">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="10"/>
                     </Style>
                 </Button.Resources>
                 <DockPanel>
-                    <TextBlock DockPanel.Dock="Right" Text="Товаров в корзине 0"
-                               VerticalAlignment="Center" Margin="15,0,0,0"
-                               FontSize="20"/>
+                    <StackPanel DockPanel.Dock="Right" Margin="15,0,0,0">
+                        <TextBlock DockPanel.Dock="Right" 
+                                   Text="{Binding Cart.TotalItemsCount, StringFormat=Товаров в корзине {0}}"
+                                   VerticalAlignment="Center" 
+                                   FontSize="20"/>
+                        <TextBlock Text="{Binding Cart.TotalPrice, StringFormat=Стоимость: {0:c2}, ConverterCulture=Ru-RU}"
+                                   FontSize="16"/>
+                    </StackPanel>
                     <fa:ImageAwesome Height="60" Icon="Solid_ShoppingCart"/>
                 </DockPanel>
             </Button>
-            <Button DockPanel.Dock="Left" Padding="10" BorderThickness="0">
+            <Button DockPanel.Dock="Left" Padding="10" BorderThickness="0"
+                    Command="{Binding AddToCartCommand}"
+                    CommandParameter="{Binding SelectedProduct}">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="10"/>
@@ -85,8 +94,14 @@
 
             <GroupBox Header="Товары" Grid.Column="1">
                 <ListBox ItemsSource="{Binding Products}" 
+                         SelectedItem="{Binding SelectedProduct}"
                          VerticalContentAlignment="Stretch" 
                          HorizontalContentAlignment="Stretch">
+                    <ListBox.InputBindings>
+                        <MouseBinding MouseAction="LeftDoubleClick" 
+                                      Command="{Binding AddToCartCommand}"
+                                      CommandParameter="{Binding SelectedProduct}"/>
+                    </ListBox.InputBindings>
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <UniformGrid/>

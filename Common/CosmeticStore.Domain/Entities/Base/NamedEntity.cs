@@ -7,4 +7,6 @@ public class NamedEntity : Entity, INamedEntity
 {
     [Required]
     public string Name { get; set; } = null!;
+
+    public override string ToString() => $"[{Id}]{Name}";
 }

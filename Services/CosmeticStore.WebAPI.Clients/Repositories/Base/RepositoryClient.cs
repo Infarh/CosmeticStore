@@ -55,11 +55,12 @@ public abstract class RepositoryClient<T> : IRepository<T> where T : class, IEnt
     public async Task<int> AddAsync(T Item, CancellationToken Cancel = default)
     {
         var response = await Http.PostAsJsonAsync(Address, Item, Cancel).ConfigureAwait(false);
-        var id = await response
+        var created_item = await response
            .EnsureSuccessStatusCode()
            .Content
-           .ReadFromJsonAsync<int>(cancellationToken: Cancel);
-        return id;
+           .ReadFromJsonAsync<T>(cancellationToken: Cancel);
+        Item.Id = created_item!.Id;
+        return Item.Id;
     }
 
     public async Task<bool> UpdateAsync(T Item, CancellationToken Cancel = default)

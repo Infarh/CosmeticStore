@@ -10,12 +10,12 @@ namespace CosmeticStore.WebAPI.Controllers;
 [Route(WebAPIAddress.Products)]
 public class ProductsApiController : EntityApiController<Product>
 {
-    public ProductsApiController(IProductsRepository Products) : base(Products) { }
+    public ProductsApiController(IProductsRepository Repository) : base(Repository) { }
 
     [HttpGet("category/{CategoryId}")]
     public async Task<IActionResult> GetCategoryProducts(int CategoryId)
     {
-        var repository = (IProductsRepository)_Items;
+        var repository = (IProductsRepository)Repository;
         var products = await repository.GetCategoryProducts(CategoryId);
 
         if (!products.Any())

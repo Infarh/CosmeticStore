@@ -8,8 +8,8 @@ namespace CosmeticStore.Services.Repositories;
 
 public class DbRepository<T> : IRepository<T> where T : class, IEntity
 {
-    private readonly CosmeticDB _db;
-    private readonly ILogger<DbRepository<T>> _Logger;
+    protected readonly CosmeticDB _db;
+    protected readonly ILogger<DbRepository<T>> _Logger;
 
     protected DbSet<T> Set { get; set; }
     

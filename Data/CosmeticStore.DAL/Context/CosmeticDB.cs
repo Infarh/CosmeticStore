@@ -19,5 +19,9 @@ public class CosmeticDB : DbContext
         model.Entity<Product>()
            .Property(product => product.Price)
            .HasPrecision(18, 2);
+
+        model.Entity<Customer>()
+           .HasIndex(p => p.Name)
+           .IsUnique();
     }
 }

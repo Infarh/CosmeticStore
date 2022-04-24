@@ -15,6 +15,8 @@ public class ProductViewModel : ViewModel
     public string Name { get; init; } = null!;
     public string? Description { get; init; }
     public decimal Price { get; init; }
+    public int CategoryId { get; init; }
+    public string CategoryName { get; init; } = null!;
 
     #region Image : ImageSource - Изображение
 

@@ -15,13 +15,15 @@ public static class Registrator
     {
         services.AddHttpClient("ConsmeticApi", client => client.BaseAddress = new(Address))
            .AddTypedClient<IProductsRepository, ProductsClient>()
+           .AddTypedClient<ICustomersRepository, CustomersClient>()
+           .AddTypedClient<IOrdersRepository, OrdersClient>()
            .AddTypedClient<IRepository<Product>, ProductsClient>()
            .AddTypedClient<IRepository<Order>, OrdersClient>()
            .AddTypedClient<IRepository<Customer>, CustomersClient>()
            .AddTypedClient<IRepository<Category>, CategoriesClient>()
            .AddTypedClient<ImagesClient>()
-           .AddPolicyHandler(GetRetryPolicy())
-           .AddPolicyHandler(GetCircuitBreakerPolicy())
+           //.AddPolicyHandler(GetRetryPolicy())
+           //.AddPolicyHandler(GetCircuitBreakerPolicy())
            .SetHandlerLifetime(TimeSpan.FromMinutes(15));
 
         return services;

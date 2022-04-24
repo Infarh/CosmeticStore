@@ -11,5 +11,5 @@ namespace CosmeticStore.WebAPI.Controllers;
 [Route(WebAPIAddress.Categories)]
 public class CategoriesApiController : EntityApiController<Category>
 {
-    public CategoriesApiController(IRepository<Category> Products) : base(Products) { }
+    public CategoriesApiController(IRepository<Category> Repository) : base(Repository) { }
 }

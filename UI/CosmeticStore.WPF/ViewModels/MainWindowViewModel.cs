@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -22,16 +21,27 @@ public class MainWindowViewModel : ViewModel
     private readonly IRepository<Category> _CategoriesRepository;
     private readonly ImagesClient _ImagesClient;
 
+    public IOrdersRepository OrdersRepository { get; }
+    public ICustomersRepository CustomersRepository { get; }
+
     public MainWindowViewModel(
         IProductsRepository ProductsRepository,
+        IOrdersRepository OrdersRepository,
+        ICustomersRepository CustomersRepository,
         IRepository<Category> CategoriesRepository,
         ImagesClient ImagesClient
         )
     {
         _ProductsRepository = ProductsRepository;
+        this.OrdersRepository = OrdersRepository;
+        this.CustomersRepository = CustomersRepository;
         _CategoriesRepository = CategoriesRepository;
         _ImagesClient = ImagesClient;
+
+        Cart = new(this);
     }
+
+    public CartOrderViewModel Cart { get; }
 
     #region Title : string - Заголовок главного окна
 
@@ -108,21 +118,13 @@ public class MainWindowViewModel : ViewModel
                     Name = product.Name,
                     Price = product.Price,
                     Description = product.Description,
+                    CategoryId = product.CategoryId,
+                    CategoryName = product.Category?.Name!,
                 };
                 _ = product_model.LoadImageAsync(_ImagesClient, product.ImageUrl);
                 product_view_models.Add(product_model);
             }
 
-            //Products = products
-            //   .Select(p => new ProductViewModel
-            //    {
-            //        Id = p.Id,
-            //        Name = p.Name,
-            //        Price = p.Price,
-            //        Description = p.Description,
-            //        ImageUrl = p.ImageUrl
-            //    })
-            //   .ToArray();
             Products = product_view_models;
         }
         catch (OperationCanceledException)
@@ -243,6 +245,45 @@ public class MainWindowViewModel : ViewModel
         }
 
         _UpdateDataCancellation = null;
+    }
+
+    #endregion
+
+    #region Command AddToCartCommand - Добавить в корзину
+
+    /// <summary>Добавить в корзину</summary>
+    private LambdaCommand? _AddToCartCommand;
+
+    /// <summary>Добавить в корзину</summary>
+    public ICommand AddToCartCommand => _AddToCartCommand ??= new(OnAddToCartCommandExecuted, p => p is ProductViewModel);
+
+    /// <summary>Логика выполнения - Добавить в корзину</summary>
+    private void OnAddToCartCommandExecuted(object? p)
+    {
+        if (p is ProductViewModel product) Cart.Add(product);
+    }
+
+    #endregion
+
+    #region Command ShowCartCommand - Показать корзину
+
+    /// <summary>Показать корзину</summary>
+    private LambdaCommand? _ShowCartCommand;
+
+    /// <summary>Показать корзину</summary>
+    public ICommand ShowCartCommand => _ShowCartCommand 
+        ??= new(OnShowCartCommandExecuted, () => _UserName is { Length: > 0 } && Cart.Items.Count > 0);
+
+    /// <summary>Логика выполнения - Показать корзину</summary>
+    private void OnShowCartCommandExecuted()
+    {
+        var cart_window = new CartWindow
+        {
+            Owner = Application.Current.MainWindow,
+            DataContext = Cart,
+        };
+
+        cart_window.ShowDialog();
     }
 
     #endregion

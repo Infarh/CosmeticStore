@@ -2,7 +2,4 @@
 
 namespace CosmeticStore.Domain.Entities;
 
-public class Customer : NamedEntity
-{
-    
-}
+public class Customer : NamedEntity { }
