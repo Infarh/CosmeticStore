@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Windows;
+using CosmeticStore.Admin.WPF.ViewModels;
 using CosmeticStore.WebAPI.Clients.Infrastructure;
-using CosmeticStore.WPF.ViewModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace CosmeticStore.WPF;
+namespace CosmeticStore.Admin.WPF;
 
 public partial class App
 {

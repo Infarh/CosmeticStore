@@ -1,4 +1,4 @@
-﻿namespace CosmeticStore.WPF.Views.Windows;
+﻿namespace CosmeticStore.Admin.WPF;
 
 public partial class MainWindow
 {
