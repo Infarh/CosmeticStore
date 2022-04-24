@@ -107,7 +107,7 @@ public class MainWindowViewModel : ViewModel
 
         try
         {
-            var products = await _ProductsRepository.GetCategoryProducts(category_id);
+            var products = await _ProductsRepository.GetCategoryProductsAsync(category_id);
 
             var product_view_models = new List<ProductViewModel>();
             foreach (var product in products)

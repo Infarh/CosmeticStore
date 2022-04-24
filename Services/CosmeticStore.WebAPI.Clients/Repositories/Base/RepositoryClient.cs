@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
 using CosmeticStore.Interfaces.Base.Entities;
 using CosmeticStore.Interfaces.Base.Repositories;
 
@@ -32,18 +27,32 @@ public abstract class RepositoryClient<T> : IRepository<T> where T : class, IEnt
 
     public async Task<IEnumerable<T>> GetAllAsync(CancellationToken Cancel = default)
     {
-        var items = await Http
-           .GetFromJsonAsync<IEnumerable<T>>(Address, Cancel)
-           .ConfigureAwait(false);
-        return items!;
+        var response = await Http.GetAsync(Address, Cancel).ConfigureAwait(false);
+
+        if (response.StatusCode == HttpStatusCode.NoContent) return Enumerable.Empty<T>();
+
+        var items = await response
+               .EnsureSuccessStatusCode()
+               .Content
+               .ReadFromJsonAsync<IEnumerable<T>>(cancellationToken: Cancel)
+            ?? throw new InvalidOperationException($"Не удалось получить список {typeof(T).Name}");
+        
+        return items;
     }
 
     public async Task<IEnumerable<T>> GetAsync(int Skip, int Take, CancellationToken Cancel = default)
     {
-        var items = await Http
-           .GetFromJsonAsync<IEnumerable<T>>($"{Address}/({Skip}:{Take})", Cancel)
-           .ConfigureAwait(false);
-        return items!;
+        var response = await Http.GetAsync($"{Address}/({Skip}:{Take})", Cancel).ConfigureAwait(false);
+
+        if (response.StatusCode == HttpStatusCode.NoContent) return Enumerable.Empty<T>();
+
+        var items = await response
+               .EnsureSuccessStatusCode()
+               .Content
+               .ReadFromJsonAsync<IEnumerable<T>>(cancellationToken: Cancel)
+            ?? throw new InvalidOperationException($"Не удалось получить список {typeof(T).Name}");
+
+        return items;
     }
 
     public async Task<T?> GetByIdAsync(int Id, CancellationToken Cancel = default)
@@ -55,30 +64,39 @@ public abstract class RepositoryClient<T> : IRepository<T> where T : class, IEnt
     public async Task<int> AddAsync(T Item, CancellationToken Cancel = default)
     {
         var response = await Http.PostAsJsonAsync(Address, Item, Cancel).ConfigureAwait(false);
+
         var created_item = await response
            .EnsureSuccessStatusCode()
            .Content
            .ReadFromJsonAsync<T>(cancellationToken: Cancel);
+
         Item.Id = created_item!.Id;
+
         return Item.Id;
     }
 
     public async Task<bool> UpdateAsync(T Item, CancellationToken Cancel = default)
     {
         var response = await Http.PutAsJsonAsync(Address, Item, Cancel).ConfigureAwait(false);
+
         if (response.StatusCode == HttpStatusCode.NotFound)
             return false;
+
         return response.EnsureSuccessStatusCode().StatusCode == HttpStatusCode.OK;
     }
 
     public async Task<T?> RemoveAsync(int Id, CancellationToken Cancel = default)
     {
         var response = await Http.DeleteAsync($"{Address}/{Id}", Cancel).ConfigureAwait(false);
+
         if (response.StatusCode == HttpStatusCode.NotFound)
             return null;
-        return await response
+
+        var result = await response
            .EnsureSuccessStatusCode()
            .Content
            .ReadFromJsonAsync<T>(cancellationToken: Cancel);
+
+        return result;
     }
 }

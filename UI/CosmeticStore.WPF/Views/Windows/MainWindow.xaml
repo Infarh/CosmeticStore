@@ -9,7 +9,7 @@
         WindowStartupLocation="CenterScreen"
         Title="{Binding Title}"
         DataContext="{Binding MainModel, Source={StaticResource Locator}}"
-        Width="1700" Height="1000">
+        Width="1500" Height="900">
     <DockPanel Margin="10">
         <StatusBar>
             <StatusBarItem>
@@ -128,7 +128,12 @@
                                     BorderThickness="1" BorderBrush="Gray"
                                     CornerRadius="5">
                                 <DockPanel Margin="5">
-                                    <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" Text="{Binding Name}"/>
+                                    <DockPanel DockPanel.Dock="Top">
+                                        <TextBlock DockPanel.Dock="Right" Text="{Binding Price, StringFormat=c2, ConverterCulture=ru-RU}"
+                                                   VerticalAlignment="Bottom" HorizontalAlignment="Right" 
+                                                   FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </DockPanel>
                                     <TextBlock DockPanel.Dock="Bottom" Text="{Binding Description}"/>
                                     <Border BorderThickness="0,1" BorderBrush="Gray" Margin="3">
                                         <Grid>

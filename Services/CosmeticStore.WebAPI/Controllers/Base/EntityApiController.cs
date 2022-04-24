@@ -47,7 +47,7 @@ public abstract class EntityApiController<T> : ControllerBase where T : class, I
     }
 
     [HttpPost]
-    public virtual async Task<IActionResult> Add([FromBody, ValidateNever] T item)
+    public virtual async Task<IActionResult> Add([FromBody] T item)
     {
         var id = await Repository.AddAsync(item);
         return CreatedAtAction(nameof(GetById), new { Id = id }, item);

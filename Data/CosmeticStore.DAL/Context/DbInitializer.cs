@@ -1,4 +1,5 @@
 ﻿using CosmeticStore.Domain.Entities;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -27,7 +28,7 @@ public class DbInitializer
         return false;
     }
 
-    public async Task InitializeAsync(bool RemoveBefore = false, CancellationToken Cancel = default)
+    public async Task InitializeAsync(bool RemoveBefore = false, bool AddTestData = true, CancellationToken Cancel = default)
     {
         if (RemoveBefore)
             await DeleteAsync(Cancel).ConfigureAwait(false);
@@ -42,7 +43,8 @@ public class DbInitializer
             _Logger.LogInformation("БД обновлена.");
         }
 
-        await AddTestDataAsync(Cancel);
+        if (AddTestData)
+            await AddTestDataAsync(Cancel);
     }
 
     private async Task AddTestDataAsync(CancellationToken Cancel = default)
@@ -57,22 +59,22 @@ public class DbInitializer
 
         var categories = Enumerable.Range(1, 10)
            .Select(i => new Category
-            {
-                Name = $"Категория-{i}",
-            })
+           {
+               Name = $"Категория-{i}",
+           })
            .ToArray();
 
         var rnd = new Random(10);
 
         var products = Enumerable.Range(1, 100)
            .Select(i => new Product
-            {
+           {
                Name = $"Товар-{i}",
                Description = $"Описание товара {i}",
                Price = rnd.Next(500, 2000),
                Category = categories[rnd.Next(categories.Length)],
                ImageUrl = $"Img{rnd.Next(1, 11)}.jpg",
-            });
+           });
 
         await using var transaction = await _db.Database.BeginTransactionAsync(Cancel);
 

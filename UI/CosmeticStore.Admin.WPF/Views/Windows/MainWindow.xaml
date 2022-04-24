@@ -28,26 +28,28 @@
                     </DockPanel>
                 </Button>
                 <Separator/>
-                <Button>
+                <Button Command="{Binding CreateCategoryCommand}">
                     <DockPanel>
                         <fa:ImageAwesome Height="18" Icon="Solid_FolderPlus"/>
                         <TextBlock Text="Создать категорию" VerticalAlignment="Center" Margin="5,0,0,0"/>
                     </DockPanel>
                 </Button>
-                <Button>
+                <Button Command="{Binding RemoveCategoryCommand}"
+                        CommandParameter="{Binding SelectedCategory}">
                     <DockPanel>
                         <fa:ImageAwesome Height="18" Icon="Solid_FolderMinus"/>
                         <TextBlock Text="Удалить категорию" VerticalAlignment="Center" Margin="5,0,0,0"/>
                     </DockPanel>
                 </Button>
                 <Separator/>
-                <Button>
+                <Button Command="{Binding CreateProductCommand}">
                     <DockPanel>
                         <fa:ImageAwesome Height="18" Icon="Regular_File"/>
                         <TextBlock Text="Создать товар" VerticalAlignment="Center" Margin="5,0,0,0"/>
                     </DockPanel>
                 </Button>
-                <Button>
+                <Button Command="{Binding RemoveProductCommand}"
+                        CommandParameter="{Binding SelectedProduct}">
                     <DockPanel>
                         <Grid>
                             <fa:ImageAwesome Height="18" Icon="Regular_File"/>
@@ -66,7 +68,7 @@
             </Grid.ColumnDefinitions>
             <GroupBox Grid.Column="0" Header="Категории">
                 <DockPanel>
-                    <ListBox ItemsSource="{Binding Catigoties}"
+                    <ListBox ItemsSource="{Binding Categories}"
                              SelectedItem="{Binding SelectedCategory}"
                              DisplayMemberPath="Name"/>
                 </DockPanel>
@@ -89,14 +91,17 @@
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Column="0" Grid.Row="0" Text="Название:" VerticalAlignment="Center" HorizontalAlignment="Right" FontWeight="Bold"/>
                         <TextBlock Grid.Column="0" Grid.Row="1" Text="Цена:" VerticalAlignment="Center" HorizontalAlignment="Right" FontWeight="Bold"/>
-                        <TextBlock Grid.Column="0" Grid.Row="2" Text="Описание:" Margin="0,3,0,0" HorizontalAlignment="Right" FontWeight="Bold"/>
+                        <TextBlock Grid.Column="0" Grid.Row="2" Text="Картинка:" VerticalAlignment="Center" HorizontalAlignment="Right" FontWeight="Bold"/>
+                        <TextBlock Grid.Column="0" Grid.Row="3" Text="Описание:" Margin="0,3,0,0" HorizontalAlignment="Right" FontWeight="Bold"/>
 
                         <TextBox Grid.Column="1" Grid.Row="0" Margin="3,3,3,0" Text="{Binding Name}" IsReadOnly="True"/>
-                        <TextBox Grid.Column="1" Grid.Row="1" Margin="3,3,3,0" Text="{Binding Price}" IsReadOnly="True"/>
-                        <TextBox Grid.Column="1" Grid.Row="2" Margin="3,3,3,0" Text="{Binding Description}" IsReadOnly="True" MinHeight="60" />
+                        <TextBox Grid.Column="1" Grid.Row="1" Margin="3,3,3,0" Text="{Binding Price, StringFormat=c2, ConverterCulture=ru-RU}" IsReadOnly="True"/>
+                        <TextBox Grid.Column="1" Grid.Row="2" Margin="3,3,3,0" Text="{Binding ImageUrl}" IsReadOnly="True"/>
+                        <TextBox Grid.Column="1" Grid.Row="3" Margin="3,3,3,0" Text="{Binding Description}" IsReadOnly="True" MinHeight="60" />
                     </Grid>
                 </ScrollViewer>
             </GroupBox>

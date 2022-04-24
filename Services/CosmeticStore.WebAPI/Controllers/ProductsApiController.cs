@@ -16,10 +16,21 @@ public class ProductsApiController : EntityApiController<Product>
     public async Task<IActionResult> GetCategoryProducts(int CategoryId)
     {
         var repository = (IProductsRepository)Repository;
-        var products = await repository.GetCategoryProducts(CategoryId);
+        var products = await repository.GetCategoryProductsAsync(CategoryId);
 
         if (!products.Any())
             return NoContent();
         return Ok(products);
+    }
+
+    [HttpPost]
+    public override async Task<IActionResult> Add([FromBody] Product item)
+    {
+        var result = await base.Add(item);
+
+        if (result is CreatedAtActionResult { Value: Product product })
+            product.Category.Products = null!;
+
+        return result;
     }
 }
