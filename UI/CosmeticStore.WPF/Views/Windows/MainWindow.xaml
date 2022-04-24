@@ -108,47 +108,96 @@
             </GroupBox>
 
             <GroupBox Header="Товары" Grid.Column="1">
-                <ListBox ItemsSource="{Binding Products}" 
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="830"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <ListBox ItemsSource="{Binding Products}" 
                          SelectedItem="{Binding SelectedProduct}"
                          VerticalContentAlignment="Stretch" 
                          HorizontalContentAlignment="Stretch">
-                    <ListBox.InputBindings>
-                        <MouseBinding MouseAction="LeftDoubleClick" 
+                        <ListBox.InputBindings>
+                            <MouseBinding MouseAction="LeftDoubleClick" 
                                       Command="{Binding AddToCartCommand}"
                                       CommandParameter="{Binding SelectedProduct}"/>
-                    </ListBox.InputBindings>
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <UniformGrid/>
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate DataType="vm:ProductViewModel">
-                            <Border Margin="3"
+                        </ListBox.InputBindings>
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="3"/>
+                                <!--<WrapPanel MaxWidth="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ListBox}}"/>-->
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="vm:ProductViewModel">
+                                <Border Margin="3"
                                     BorderThickness="1" BorderBrush="Gray"
                                     CornerRadius="5">
-                                <DockPanel Margin="5">
-                                    <DockPanel DockPanel.Dock="Top">
-                                        <TextBlock DockPanel.Dock="Right" Text="{Binding Price, StringFormat=c2, ConverterCulture=ru-RU}"
+                                    <DockPanel Margin="5">
+                                        <DockPanel DockPanel.Dock="Top">
+                                            <TextBlock DockPanel.Dock="Right" Text="{Binding Price, StringFormat=c2, ConverterCulture=ru-RU}"
                                                    VerticalAlignment="Bottom" HorizontalAlignment="Right" 
                                                    FontWeight="Bold"/>
-                                        <TextBlock Text="{Binding Name}"/>
-                                    </DockPanel>
-                                    <TextBlock DockPanel.Dock="Bottom" Text="{Binding Description}"/>
-                                    <Border BorderThickness="0,1" BorderBrush="Gray" Margin="3">
-                                        <Grid>
-                                            <TextBlock Text="No image" Foreground="Gray" FontWeight="Bold"
+                                            <TextBlock Text="{Binding Name}"/>
+                                        </DockPanel>
+                                        <TextBlock DockPanel.Dock="Bottom" Text="{Binding Description}"/>
+                                        <Border BorderThickness="0,1" BorderBrush="Gray" Margin="3">
+                                            <Grid>
+                                                <TextBlock Text="No image" Foreground="Gray" FontWeight="Bold"
                                                        HorizontalAlignment="Center" 
                                                        VerticalAlignment="Center"/>
-                                            <Image Source="{Binding Image}" Margin="3"
+                                                <Image Source="{Binding Image}" Margin="3"
                                                    MaxHeight="140"/>
-                                        </Grid>
-                                    </Border>
-                                </DockPanel>
-                            </Border>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                                            </Grid>
+                                        </Border>
+                                    </DockPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <Grid Grid.Column="1" DataContext="{Binding SelectedProduct}" Margin="10">
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DataContext.SelectedProduct, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                 Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding Name}"
+                                   HorizontalAlignment="Center"
+                                   FontWeight="Bold"/>
+                        <Image Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" 
+                               Source="{Binding Image}" Margin="0,10"
+                               MaxHeight="140" HorizontalAlignment="Center"/>
+
+                        <TextBlock Grid.Column="0" Grid.Row="2" Text="Цена:"/>
+                        <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Price, StringFormat=c2, ConverterCulture=ru-RU}" Margin="5,0,0,0"/>
+
+                        <TextBlock Grid.Column="0" Grid.Row="3" Text="Категория:"/>
+                        <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding DataContext.SelectedCategory.Name, RelativeSource={RelativeSource AncestorType=Window}}" Margin="5,0,0,0"/>
+
+                        <TextBlock Grid.Column="0" Grid.Row="4" Text="Описание:"/>
+                        <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding Description}" Margin="5,0,0,0"/>
+                    </Grid>
+
+                    <GridSplitter Grid.Column="0" HorizontalAlignment="Right"/>
+                </Grid>
             </GroupBox>
 
             <GridSplitter Grid.Column="1" HorizontalAlignment="Left"/>
