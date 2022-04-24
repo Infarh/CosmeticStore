@@ -1,0 +1,93 @@
+﻿<Window x:Class="CosmeticStore.WPF.Views.Windows.CustomerOrdersWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.fontawesome.com/icons/"
+        xmlns:l="clr-namespace:CosmeticStore.WPF.Views.Windows"
+        xmlns:vm="clr-namespace:CosmeticStore.WPF.ViewModels"
+        xmlns:e="clr-namespace:CosmeticStore.Domain.Entities;assembly=CosmeticStore.Domain"
+        WindowStartupLocation="CenterOwner"
+        Title="Заказы"
+        d:DataContext="{d:DesignInstance vm:CustomerOrdersViewModel, IsDesignTimeCreatable=True}"
+        Width="800" Height="600">
+    <DockPanel Margin="10">
+        <DockPanel DockPanel.Dock="Top" LastChildFill="False">
+            <Button Padding="20,5" BorderThickness="0"
+                    Command="{Binding LoadOrdersCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <fa:ImageAwesome Height="20" Icon="Solid_FileDownload"/>
+                    <TextBlock VerticalAlignment="Center" Text="Загрузить" Margin="5,0,0,0"/>
+                </StackPanel>
+            </Button>
+            <Button Padding="20,5" BorderThickness="0"
+                    Command="{Binding CancelOrderCommand}"
+                    CommandParameter="{Binding SelectedOrder}">
+                <StackPanel Orientation="Horizontal">
+                    <fa:ImageAwesome Height="20" Icon="Solid_TimesCircle"/>
+                    <TextBlock VerticalAlignment="Center" Text="Отменить" Margin="5,0,0,0"/>
+                </StackPanel>
+            </Button>
+        </DockPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <GroupBox Grid.Column="0" Header="Заказы">
+                <ListBox ItemsSource="{Binding Orders}" SelectedItem="{Binding SelectedOrder}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="e:Order">
+                            <TextBlock>
+                                [<TextBlock Text="{Binding Id}"/>]
+                                <TextBlock Text="{Binding Date, StringFormat=dd.MM.yyyy HH:mm}"/>
+                                :
+                                <TextBlock Text="{Binding TotalPrice, StringFormat=c2, ConverterCulture=ru-RU}"/>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </GroupBox>
+            <GroupBox Grid.Column="1" Header="Заказ">
+                <DockPanel>
+                    <Grid DockPanel.Dock="Top" Margin="0,0,0,3" DataContext="{Binding SelectedOrder}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Дата:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Телефон:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold"/>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Комментарий:" HorizontalAlignment="Right" Margin="0,2,0,0" FontWeight="Bold"/>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Стоимость:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold"/>
+
+                        <TextBox Grid.Row="0" Grid.Column="1" Margin="3,3,0,0" Text="{Binding Date, StringFormat=dd.HH.yyyy HH:mm:ss}" IsReadOnly="True"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Margin="3,3,0,0" Text="{Binding Phone}" IsReadOnly="True"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Margin="3,3,0,0" Text="{Binding Description}" IsReadOnly="True"/>
+                        <TextBox Grid.Row="3" Grid.Column="1" Margin="3,3,0,0" Text="{Binding TotalPrice, Mode=OneWay, StringFormat=c2, ConverterCulture=ru-RU}" IsReadOnly="True"/>
+                    </Grid>
+                    <ListBox ItemsSource="{Binding SelectedOrder.Items}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="e:OrderItem">
+                                <TextBlock>
+                                    <TextBlock Text="{Binding Product.Name}"/>
+                                    (<TextBlock Text="{Binding Product.Price, StringFormat=c2, ConverterCulture=ru-RU}"/>)
+                                    -
+                                    <TextBlock Text="{Binding Quantity}"/> шт.
+                                    (<TextBlock Text="{Binding TotalPrice, StringFormat=c2, ConverterCulture=ru-RU}"/>)
+                                </TextBlock>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DockPanel>
+            </GroupBox>
+
+            <GridSplitter Grid.Column="0" HorizontalAlignment="Right"/>
+        </Grid>
+    </DockPanel>
+</Window>

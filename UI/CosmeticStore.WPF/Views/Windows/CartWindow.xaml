@@ -1,0 +1,101 @@
+﻿<Window x:Class="CosmeticStore.WPF.Views.Windows.CartWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.fontawesome.com/icons/"
+        xmlns:l="clr-namespace:CosmeticStore.WPF.Views.Windows"
+        xmlns:vm="clr-namespace:CosmeticStore.WPF.ViewModels"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        d:DataContext="{d:DesignInstance vm:CartOrderViewModel, IsDesignTimeCreatable=True}"
+        Title="{Binding TotalItemsCount, StringFormat=Товаров в корзине {0}}"
+        Width="500" Height="450">
+    <DockPanel Margin="10">
+        <GroupBox Header="Заказ" DockPanel.Dock="Bottom">
+            <DockPanel>
+                <Button DockPanel.Dock="Right" Padding="10,5"
+                        Command="{Binding ClearCommand}">
+                    <StackPanel>
+                        <TextBlock Text="Очистить"/>
+                        <fa:ImageAwesome Height="10" Icon="Solid_Times" Margin="0,3,0,0"
+                                         Foreground="Red"/>
+                    </StackPanel>
+                </Button>
+                <Button DockPanel.Dock="Right" Padding="10,5"
+                        Command="{Binding CheckoutCommand}" Margin="0,0,3,0">
+                    <StackPanel>
+                        <TextBlock Text="Оформить"/>
+                        <fa:ImageAwesome Height="10" Icon="Solid_Check" Margin="0,3,0,0"
+                                         Foreground="LimeGreen"/>
+                    </StackPanel>
+                </Button>
+                <Grid Margin="0,0,3,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Телефон:" VerticalAlignment="Center"/>
+                    <Grid Grid.Row="0" Grid.Column="1">
+                        <TextBlock Text="Введите номер телефона" VerticalAlignment="Center" Margin="8,0"
+                                   Foreground="DarkGray"/>
+                        <TextBox Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="3">
+                            <TextBox.Style>
+                                <Style TargetType="TextBox">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+                    </Grid>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Комментарий:" VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" 
+                             TextWrapping="WrapWithOverflow"
+                             Text="{Binding Description}"
+                             Margin="3"/>
+                </Grid>
+            </DockPanel>
+        </GroupBox>
+        <DataGrid ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" IsReadOnly="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Товар" Binding="{Binding Product.Name}" IsReadOnly="True" Width="*"/>
+                <DataGridTextColumn Header="Количество" Binding="{Binding Quantity}" IsReadOnly="False"/>
+                <DataGridTemplateColumn Width="70" MinWidth="70" MaxWidth="70">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="vm:CartItemViewModel">
+                            <UniformGrid Rows="1">
+                                <Button Padding="5,0" BorderThickness="0" Background="Transparent"
+                                        Command="{Binding DataContext.IncrementCommand, RelativeSource={RelativeSource AncestorType=Window}, Mode=OneTime}"
+                                        CommandParameter="{Binding}">
+                                    <fa:ImageAwesome Width="10" Icon="Solid_Plus"
+                                                     Foreground="Blue"/>
+                                </Button>
+                                <Button Padding="5,0" BorderThickness="0" Background="Transparent"
+                                        Command="{Binding DataContext.DecrementCommand, RelativeSource={RelativeSource AncestorType=Window}, Mode=OneTime}"
+                                        CommandParameter="{Binding}">
+                                    <fa:ImageAwesome Width="10" Icon="Solid_Minus"
+                                                     Foreground="Orange"/>
+                                </Button>
+                                <Button Padding="5,0" BorderThickness="0" Background="Transparent"
+                                        Command="{Binding DataContext.RemoveCommand, RelativeSource={RelativeSource AncestorType=Window}, Mode=OneTime}"
+                                        CommandParameter="{Binding}">
+                                    <fa:ImageAwesome Width="10" Icon="Solid_Times"
+                                                     Foreground="Red"/>
+                                </Button>
+                            </UniformGrid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</Window>
