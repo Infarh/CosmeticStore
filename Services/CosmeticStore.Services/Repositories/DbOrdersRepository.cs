@@ -64,4 +64,15 @@ public class DbOrdersRepository : DbRepository<Order>, IOrdersRepository
 
         return order;
     }
+
+    public async Task<IEnumerable<Order>> GetCustomerOrdersAsync(string Name, CancellationToken Cancel = default)
+    {
+        var orders = await Set
+           .Include(order => order.Items)
+           .ThenInclude(item => item.Product)
+           .Where(order => order.Customer.Name == Name)
+           .ToArrayAsync(Cancel)
+           .ConfigureAwait(false);
+        return orders;
+    }
 }

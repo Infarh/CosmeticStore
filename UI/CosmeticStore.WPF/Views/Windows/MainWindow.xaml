@@ -32,6 +32,21 @@
                     <fa:ImageAwesome Height="60" Icon="Regular_User"/>
                 </DockPanel>
             </Button>
+            <Button DockPanel.Dock="Right" Padding="15,0" BorderThickness="0"
+                    Command="{Binding ShowOrdersCommand}">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"/>
+                    </Style>
+                </Button.Resources>
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Left" 
+                               Text="Заказы"
+                               VerticalAlignment="Center" Margin="0,0,15,0"
+                               FontSize="20"/>
+                    <fa:ImageAwesome Height="40" Icon="Solid_MoneyCheck"/>
+                </DockPanel>
+            </Button>
             <Button DockPanel.Dock="Left" Padding="10" BorderThickness="0"
                     Command="{Binding ShowCartCommand}">
                 <Button.Resources>

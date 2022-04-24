@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net;
+using System.Net.Http.Json;
 using CosmeticStore.Domain.DTO;
 using CosmeticStore.Domain.Entities;
 using CosmeticStore.Interfaces.Base;
@@ -28,5 +29,21 @@ public class OrdersClient : RepositoryClient<Order>, IOrdersRepository
             ?? throw new InvalidOperationException("Не удалось получить сформированный заказ от сервиса");
 
         return order;
+    }
+
+    public async Task<IEnumerable<Order>> GetCustomerOrdersAsync(string Name, CancellationToken Cancel = default)
+    {
+        var response = await Http.GetAsync($"{Address}/customer/{Name}", Cancel).ConfigureAwait(false);
+
+        if(response.StatusCode == HttpStatusCode.NoContent)
+            return Enumerable.Empty<Order>();
+
+        var orders = await response
+               .EnsureSuccessStatusCode()
+               .Content
+               .ReadFromJsonAsync<IEnumerable<Order>>(cancellationToken: Cancel)
+            ?? throw new InvalidOperationException("Не удалось получить перечень заказов");
+
+        return orders;
     }
 }

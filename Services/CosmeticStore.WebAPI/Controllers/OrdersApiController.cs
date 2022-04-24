@@ -31,6 +31,22 @@ public class OrdersApiController : EntityApiController<Order>
         return CreatedAtAction(nameof(GetById), new { order.Id }, order);
     }
 
+    [HttpGet("customer/{CustomerName}")]
+    public async Task<IActionResult> GetCustomerOrders(string CustomerName)
+    {
+        var repository = (IOrdersRepository)Repository;
+
+        var orders = await repository.GetCustomerOrdersAsync(CustomerName);
+
+        if (!orders.Any())
+            return NoContent();
+
+        foreach (var item in orders.SelectMany(order => order.Items))
+            item.Order = null!;
+
+        return Ok(orders);
+    }
+
     public override async Task<IActionResult> GetAll()
     {
         var result = await base.GetAll();

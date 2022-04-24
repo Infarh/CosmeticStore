@@ -287,4 +287,27 @@ public class MainWindowViewModel : ViewModel
     }
 
     #endregion
+
+    #region Command ShowOrdersCommand - Показать заказы
+
+    /// <summary>Показать заказы</summary>
+    private LambdaCommand? _ShowOrdersCommand;
+
+    /// <summary>Показать заказы</summary>
+    public ICommand ShowOrdersCommand => _ShowOrdersCommand
+        ??= new(OnShowOrdersCommandExecuted, () => UserName is { Length: > 0 });
+
+    /// <summary>Логика выполнения - Показать заказы</summary>
+    private void OnShowOrdersCommandExecuted()
+    {
+        var window = new CustomerOrdersWindow
+        {
+            Owner = Application.Current.MainWindow,
+            DataContext = new CustomerOrdersViewModel(this)
+        };
+
+        window.ShowDialog();
+    }
+
+    #endregion
 }

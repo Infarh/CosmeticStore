@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
+using System.Text.Json.Serialization;
 using CosmeticStore.Domain.Entities.Base;
 
 namespace CosmeticStore.Domain.Entities;
@@ -21,9 +22,12 @@ public class Order : Entity
 
     public ICollection<OrderItem> Items { get; set; } = new HashSet<OrderItem>();
 
+    [JsonIgnore]
+    public decimal TotalPrice => Items?.Sum(item => item.TotalPrice) ?? 0;
+
     public override string ToString()
     {
-        FormattableString str = $"id:{Id} от {Customer.Name} ({Date}) на сумму {Items.Sum(i => i.Product.Price * i.Quantity):c2}";
+        FormattableString str = $"id:{Id} от {Customer?.Name} ({Date}) на сумму {TotalPrice:c2}";
         return str.ToString(CultureInfo.GetCultureInfo("ru-RU"));
     }
 }

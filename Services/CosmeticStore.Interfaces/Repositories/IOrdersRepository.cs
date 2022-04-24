@@ -12,4 +12,6 @@ public interface IOrdersRepository : IRepository<Order>
         string? Description,
         IEnumerable<OrderItemInfo> Items,
         CancellationToken Cancel = default);
+
+    Task<IEnumerable<Order>> GetCustomerOrdersAsync(string Name, CancellationToken Cancel = default);
 }
