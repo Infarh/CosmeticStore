@@ -50,7 +50,7 @@ await using (var scope = app.Services.CreateAsyncScope())
             AddTestData: configuration.GetValue<bool>("DatabaseAddTestData")
             );
 
-if (app.Environment.IsDevelopment())
+//if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();

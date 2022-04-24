@@ -46,7 +46,7 @@ public class MainWindowViewModel : ViewModel
     #region Title : string - Заголовок главного окна
 
     /// <summary>Заголовок главного окна</summary>
-    private string _Title = "Заголовок главного окна";
+    private string _Title = "Магазин косметики";
 
     /// <summary>Заголовок главного окна</summary>
     public string Title { get => _Title; set => Set(ref _Title, value); }
